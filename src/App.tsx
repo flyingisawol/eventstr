@@ -4,6 +4,8 @@ import EventsList from "./components/EventsList";
 import CreateEvent from "./components/CreateEvent";
 import EventCard from "./components/EventCard";
 import HashtagFilter from "./components/HashtagFilter";
+import { StringLiteral } from "typescript";
+import { insertEventIntoDescendingList } from "./utils/helperFunction";
 
 export const RELAYS = [
   "wss://relay.damus.io",
@@ -16,11 +18,19 @@ export const RELAYS = [
 
 type x = Filter
 
+export interface Metadata {
+  name?: string;
+  about?: string;
+  picture?: string;
+  nip05?: string;
+}
+
 function App() {
 
   // setup a relays pool
   const [pool, setPool] = useState<SimplePool | null>(null)
   const [events, setEvents] = useState<Event[]>([])
+  const [metadata, setMetadata] = useState<Record<string,Metadata>>({})
 
   //setup a relays pool
   useEffect(() => {
@@ -39,11 +49,10 @@ function App() {
     const sub = pool.sub(RELAYS, [{
       kinds: [1],
       limit: 100,
-      "#t":["nostr"],
     }])
 
     sub.on('event', (event: Event) => {
-    setEvents((events) => [...events, event]);
+    setEvents((events) => insertEventIntoDescendingList(events, event));
     });
 
     return () => {
@@ -51,13 +60,39 @@ function App() {
     };
   }, [pool]);
 
-  // render the events
+  useEffect(() => {
+    if (!pool) return;
+
+    const pubkeystofetch = events.map((event) => event.pubkey);
+    
+    const sub = pool.sub(RELAYS, [{
+      kinds: [0],
+      authors: pubkeystofetch
+    }])
+
+    sub.on('event', (event: Event) => {
+
+      const metadata = JSON.parse(event.content) as Metadata;
+
+      setMetadata((cur) => ({
+        ...cur,
+        [event.pubkey]: metadata, 
+      }));
+    });
+
+    sub.on("eose", () => {
+      sub.unsub();
+    })
+
+    return () => {
+    };
+  }, [events, pool]);
 
   return (
     <div className="app">
       <div className="flex flex-col gap-16">
-        <h1>evenstr in react with typescript and nostr tools</h1>
-        <EventsList notes={events} />
+        <h1>evenstr</h1>
+        <EventsList metadata={metadata} notes={events} />
       </div>
     </div>
   );
