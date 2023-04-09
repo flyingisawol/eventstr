@@ -47,10 +47,13 @@ function App() {
   useEffect(() => {
     if (!pool) return;
     
-    const sub = pool.sub(RELAYS, [{
+    setEvents([]);
+    const sub = pool.sub(RELAYS, [
+      {
       kinds: [1],
       limit: 100,
-    }])
+    },
+  ]);
 
     sub.on('event', (event: Event) => {
     setEvents((events) => insertEventIntoDescendingList(events, event));
@@ -76,9 +79,7 @@ function App() {
     }])
 
     sub.on('event', (event: Event) => {
-
       const metadata = JSON.parse(event.content) as Metadata;
-
       setMetadata((cur) => ({
         ...cur,
         [event.pubkey]: metadata, 
@@ -93,11 +94,13 @@ function App() {
     };
   }, [events, pool]);
 
+  if (!pool) return null;
+
   return (
     <div className="app">
       <div className="flex flex-col gap-16">
         <h1 className="text-h1">eventstr</h1>
-        <CreateEvent />
+        <CreateEvent pool={pool} />
         <EventsList metadata={metadata} notes={events} />
       </div>
     </div>
