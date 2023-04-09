@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { SimplePool, Event, Filter } from "nostr-tools";
+import { useDebounce } from "use-debounce"
 import EventsList from "./components/EventsList";
 import CreateEvent from "./components/CreateEvent";
 import EventCard from "./components/EventCard";
@@ -28,9 +29,11 @@ export interface Metadata {
 function App() {
 
   // setup a relays pool
-  const [pool, setPool] = useState<SimplePool | null>(null)
-  const [events, setEvents] = useState<Event[]>([])
-  const [metadata, setMetadata] = useState<Record<string,Metadata>>({})
+  const [pool, setPool] = useState<SimplePool | null>(null);
+  const [eventsImmediate, setEvents] = useState<Event[]>([]);
+  const [events] = useDebounce(eventsImmediate, 500)
+  const [metadata, setMetadata] = useState<Record<string,Metadata>>({});
+  const metadataFetched = useRef<Record<string, boolean>>({});
 
   //setup a relays pool
   useEffect(() => {
@@ -63,11 +66,15 @@ function App() {
   useEffect(() => {
     if (!pool) return;
 
-    const pubkeystofetch = events.map((event) => event.pubkey);
+    const pubkeysToFetch = events
+    .filter(event => metadataFetched.current[event.pubkey] !== true)
+    .map((event) => event.pubkey);
+
+    pubkeysToFetch.forEach(pubkey => metadataFetched.current[pubkey] = true)
     
     const sub = pool.sub(RELAYS, [{
       kinds: [0],
-      authors: pubkeystofetch
+      authors: pubkeysToFetch
     }])
 
     sub.on('event', (event: Event) => {
@@ -91,7 +98,8 @@ function App() {
   return (
     <div className="app">
       <div className="flex flex-col gap-16">
-        <h1>evenstr</h1>
+        <h1 className="text-h1">eventstr</h1>
+        <CreateEvent />
         <EventsList metadata={metadata} notes={events} />
       </div>
     </div>
