@@ -3,9 +3,7 @@ import { SimplePool, Event, Filter } from "nostr-tools";
 import { useDebounce } from "use-debounce"
 import EventsList from "./components/EventsList";
 import CreateEvent from "./components/CreateEvent";
-import EventCard from "./components/EventCard";
 import HashtagFilter from "./components/HashtagFilter";
-import { StringLiteral } from "typescript";
 import { insertEventIntoDescendingList } from "./utils/helperFunction";
 
 export const RELAYS = [
@@ -31,7 +29,7 @@ function App() {
   // setup a relays pool
   const [pool, setPool] = useState<SimplePool | null>(null);
   const [eventsImmediate, setEvents] = useState<Event[]>([]);
-  const [events] = useDebounce(eventsImmediate, 500)
+  const [events] = useDebounce(eventsImmediate, 100)
   const [metadata, setMetadata] = useState<Record<string,Metadata>>({});
   const metadataFetched = useRef<Record<string, boolean>>({});
 
