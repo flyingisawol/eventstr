@@ -22,8 +22,8 @@ const CreateEvent = ({ pool }: Props) => {
         const _baseEvent = {
             content: input,
             created_at: Math.round(Date.now() / 1000),
-            kind: 1,
-            tags: [],
+            kind: 30023,
+            tags: [['evenstr', 'attending']],
         } as EventTemplate;
 
         // allow user to sign event with nsec
@@ -60,7 +60,7 @@ const CreateEvent = ({ pool }: Props) => {
     };
 
 return (
-    <div className="w-1/5">
+    <div className="w-1/2">
 
         <h2 className='text-h3 text-white mb-12'>Share your event!!</h2>
         <form onSubmit={onSubmit}>
