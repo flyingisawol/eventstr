@@ -5,7 +5,7 @@ A nostr micro app for events.
 eventstr.xyz
 
 Events client should be accessed simply with a key pair and enable the user to post events, and also register for events.
-The UI would should a list of events, and allow us to register, show key pairs who have already registered, and also allow a discussion tab where a thread to share notes relevant to the event can be posted.
+The UI would show a list of events, and allow us to register, show key pairs who have already registered, and also allow a discussion tab where a thread to share notes relevant to the event can be posted.
 
 MVP:
 
