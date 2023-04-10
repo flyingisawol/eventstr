@@ -29,8 +29,7 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
+  box-sizing: border-box;
+  max-width: 420px;
   min-height: 100vh;
 }
