@@ -9,7 +9,7 @@ interface Props {
 
 const EventsList = ({ notes, metadata }: Props) => {
     return (
-        <div className="flex flex-col gap-16 w-1/2">
+        <div className="flex flex-col gap-16">
             {notes.map((note) => (
                 <EventCard
                     created_at={note.created_at}
