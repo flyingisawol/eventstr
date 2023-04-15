@@ -30,6 +30,21 @@ a:hover {
 body {
   margin: 0;
   box-sizing: border-box;
-  max-width: 420px;
   min-height: 100vh;
+  min-width: 100vw;
+}
+
+.purple-orange-highlights {
+  color: #6F1AB6;
+  background-color: rgb(247, 147, 26);
+  justify-content: center;
+  display: flex; 
+  font-weight: 900;
+}
+
+.feed {
+  display: flex;
+  flex-direction: column;
+  max-width: 420px;
+
 }

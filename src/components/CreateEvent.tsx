@@ -7,7 +7,12 @@ interface Props {
 }
 
 const CreateEvent = ({ pool }: Props) => {
-    const [input, setInput] = useState("");
+    
+    const initInput = {title: '', location: '', date: '', time: '', description: ''}
+
+    const [input, setInput] = useState(initInput);
+
+
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -19,7 +24,7 @@ const CreateEvent = ({ pool }: Props) => {
 
         // construct the event object
         const _baseEvent = {
-            content: input,
+            content: JSON.stringify(input),
             created_at: Math.round(Date.now() / 1000),
             kind: 1,
             tags: [['evenstr', 'attending']],
@@ -49,7 +54,7 @@ const CreateEvent = ({ pool }: Props) => {
                 if (clearedInput) return;
 
                 clearedInput = true;
-                setInput("");
+                setInput(initInput);
             });
         } catch (error) {
             alert("User rejected operation");
@@ -58,16 +63,56 @@ const CreateEvent = ({ pool }: Props) => {
         // publish event to relays
     };
 
+    const handleChange = (e: React.SyntheticEvent) => {
+        let target = e.target as HTMLInputElement;
+        setInput({...input, [target.name]:target.value})
+
+        console.log(target.value)
+    }
+
     return (
         <div>
             <h2 className='text-h3 text-white mb-12'>Share your event!!</h2>
             <form onSubmit={onSubmit}>
                 <textarea
-                    placeholder='Add your event details here...'
+                    name='title'
+                    placeholder='event name'
                     className='w-full p-12 rounded'
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    rows={6}
+                    value={input.title}
+                    onChange={handleChange}
+                    rows={1}
+                />
+                <textarea
+                    name='location'
+                    placeholder='location'
+                    className='w-full p-12 rounded'
+                    value={input.location}
+                    onChange={handleChange}
+                    rows={1}
+                />
+                <textarea
+                    name='date'
+                    placeholder='date'
+                    className='w-full p-12 rounded'
+                    value={input.date}
+                    onChange={handleChange}
+                    rows={1}
+                />
+                <textarea
+                    name='time'
+                    placeholder='time'
+                    className='w-full p-12 rounded'
+                    value={input.time}
+                    onChange={handleChange}
+                    rows={1}
+                />
+                <textarea
+                    name='description'
+                    placeholder='description'
+                    className='w-full p-12 rounded'
+                    value={input.description}
+                    onChange={handleChange}
+                    rows={1}
                 />
                 <div className='flex justify-end'>
                     <button className='bg-violet-500 px-16 py-4 rounded font-bold hover:bg-violet-600 active:scale-90'>
