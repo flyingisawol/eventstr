@@ -4,9 +4,10 @@ import { RELAYS } from "../App";
 
 interface Props {
     pool: SimplePool;
+    hashtags: string[];
 }
 
-const CreateEvent = ({ pool }: Props) => {
+const CreateEvent = ({ pool, hashtags }: Props) => {
     
     const initInput = {title: '', location: '', date: '', time: '', description: ''}
 
@@ -27,7 +28,7 @@ const CreateEvent = ({ pool }: Props) => {
             content: JSON.stringify(input),
             created_at: Math.round(Date.now() / 1000),
             kind: 1,
-            tags: [['evenstr', 'attending']],
+            tags: [...hashtags.map((hashtag) => ["t", hashtag])],
         } as EventTemplate;
 
         // allow user to sign event with nsec
@@ -71,7 +72,7 @@ const CreateEvent = ({ pool }: Props) => {
     }
 
     return (
-        <div>
+        <div className='feed'>
             <h2 className='text-h3 text-white mb-12'>Share your event!!</h2>
             <form onSubmit={onSubmit}>
                 <textarea

@@ -9,7 +9,7 @@ interface Props {
 
 const EventsList = ({ notes, metadata }: Props) => {
     return (
-        <div className="flex flex-col gap-16 justify-center">
+        <div className="flex flex-col gap-16 justify-center feed">
             {notes.map((note) => (
                 <EventCard
                     created_at={note.created_at}
@@ -24,6 +24,10 @@ const EventsList = ({ notes, metadata }: Props) => {
                     }}
                     key={note.id}
                     content={note.content}
+                    hashtags={note.tags
+                        .filter((t) => t[0] === 't')
+                        .map((t) => t[1])
+                }
                 />
             ))}
         </div>

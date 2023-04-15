@@ -13,10 +13,7 @@ export const RELAYS = [
   "wss://nostr-pub.wellorder.net",
   "wss://nostress.herokuapp.com",
   "wss://nostr.mutinywallet.com",
-  "ws://umbrel.local:4848",
 ];
-
-type x = Filter
 
 export interface Metadata {
   name?: string;
@@ -33,6 +30,7 @@ function App() {
   const [events] = useDebounce(eventsImmediate, 100)
   const [metadata, setMetadata] = useState<Record<string, Metadata>>({});
   const metadataFetched = useRef<Record<string, boolean>>({});
+  const [hashtags, setHashtags] = useState<string[]>([]);
 
   //setup a relays pool
   useEffect(() => {
@@ -53,6 +51,7 @@ function App() {
       {
         kinds: [1],
         limit: 100,
+        "#t": hashtags,
       },
     ]);
 
@@ -63,7 +62,7 @@ function App() {
     return () => {
       sub.unsub();
     };
-  }, [pool]);
+  }, [hashtags, pool]);
 
   useEffect(() => {
     if (!pool) return;
@@ -101,8 +100,9 @@ function App() {
     <div className="app">
       <div className="flex flex-col gap-16">
         <h1 className="text-h1 purple-orange-highlights">eventstr</h1>
-        <div className="feed">
-          <CreateEvent pool={pool} />
+        <div className="">
+          <CreateEvent pool={pool} hashtags={hashtags} />
+          <HashtagFilter hashtags={hashtags} onChange={setHashtags}/>
           <EventsList metadata={metadata} notes={events} />
         </div>
       </div>
