@@ -5,13 +5,14 @@ interface Props {
     image?: string
     pubkey?: string
   }
-  created_at: number
+  created_at: number;
+  hashtags: string[];
 }
 
-const EventCard = ({ content, user, created_at }: Props) => {
+const EventCard = ({ content, user, created_at, hashtags }: Props) => {
   return (
     <>
-      <div className="rounded p-16 border border-gray-600 bg-gray-700 flex flex-col gap-16 break-words">
+      <div className="rounded p-16 border border-gray-600 bg-gray-700 flex flex-col gap-16 break-words feed">
       <div className="flex gap-12 items-center overflow-hidden">
         <img
           src={user.image}
@@ -33,6 +34,18 @@ const EventCard = ({ content, user, created_at }: Props) => {
         </div>
       </div>
       <p>{content}</p>
+      <ul className="flex flex-wrap gap-12">
+      {hashtags
+      .filter((t) => hashtags.indexOf(t) === hashtags.lastIndexOf(t))
+      .map((hashtag) => (
+        <li
+        key={hashtag}
+        className="bg-gray-300 text-body5 text-gray-900 font-medium rounded-24 px-12 py-4"
+        >
+          #{hashtag}
+        </li>
+      ))}
+      </ul>
       </div>
     </>
   )
