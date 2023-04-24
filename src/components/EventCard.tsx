@@ -1,6 +1,7 @@
 import ApiEmbed from "./ApiEmbed"
 
 interface Props {
+  pubkey: string
   content: string
   user: {
     name?: string
@@ -11,16 +12,25 @@ interface Props {
   hashtags: string[];
 }
 
-const EventCard = ({ content, user, created_at, hashtags }: Props) => {
+// interface Event {
+//   title?: string
+//   date?: string
+//   location?: string
+//   time?: string
+//   description?: string
+// }
 
-  const parsedContent = JSON.parse(content,(key,value)=>{
+const  EventCard = ({  pubkey,content, user, created_at, hashtags }: Props) => {
+
+  let parsedContent : any = {title: "", date: "", location: "", time: "", description: ""}
+  if(content){
     try {
-      return JSON.parse(value)
-      
-    } catch (e) {
-      return value
+      parsedContent = JSON.parse(content)
+    } catch (e){
+      console.log("failed to parse")
+      return null
     }
-  })
+  }
   const [year,month,day] = parsedContent.date.split("-")
   const dateObj = new Date(year,month-1,day)
   const options = { weekday: 'short', day: 'numeric', month: 'long' } as const
@@ -95,6 +105,7 @@ const EventCard = ({ content, user, created_at, hashtags }: Props) => {
       <div className = 'bg-gray-400'>
         <p>{parsedContent.description}</p>
       </div>
+      {pubkey === user.pubkey ? <div className="bg-gray-300 text-body5 text-gray-900 font-medium rounded-24 px-12 py-4">Admin</div>: <div className="bg-gray-300 text-body5 text-gray-900 font-medium rounded-24 px-12 py-4">Attend</div>}
 
       
       
