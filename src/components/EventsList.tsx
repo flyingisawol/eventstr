@@ -5,13 +5,16 @@ import EventCard from "./EventCard";
 interface Props {
     notes: Event[];
     metadata: Record<string, Metadata>;
+    yourPubKey: string
 }
 
-const EventsList = ({ notes, metadata }: Props) => {
+const EventsList = ({ yourPubKey,notes, metadata }: Props) => {
+    
     return (
         <div className="flex flex-col gap-16 justify-center feed">
             {notes.map((note) => (
                 <EventCard
+                    pubkey = {yourPubKey}
                     created_at={note.created_at}
                     user={{
                         name:

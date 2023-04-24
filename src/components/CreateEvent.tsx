@@ -8,6 +8,8 @@ interface Props {
 }
 
 const CreateEvent = ({ pool, hashtags }: Props) => {
+
+    
     
     const initInput = {title: '', location: '', date: '', time: '', description: ''}
 
@@ -17,7 +19,7 @@ const CreateEvent = ({ pool, hashtags }: Props) => {
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
+        const formattedInput = {...input,"location": input.location.replaceAll(" ","+")}
         if (!window.nostr) {
             alert("nostr extension not found")
             return;
@@ -25,7 +27,7 @@ const CreateEvent = ({ pool, hashtags }: Props) => {
 
         // construct the event object
         const _baseEvent = {
-            content: JSON.stringify(input),
+            content: JSON.stringify(formattedInput),
             created_at: Math.round(Date.now() / 1000),
             kind: 1,
             tags: [...hashtags.map((hashtag) => ["t", hashtag])],
@@ -66,11 +68,13 @@ const CreateEvent = ({ pool, hashtags }: Props) => {
 
     const handleChange = (e: React.SyntheticEvent) => {
         let target = e.target as HTMLInputElement;
-        setInput({...input, [target.name]:target.value})
+        
+            setInput({...input, [target.name]:target.value})
+        
+        
 
-        console.log(target.value)
     }
-
+    // #TODO: Validation for Date + Time
     return (
         <div className='feed'>
             <h2 className='text-h3 text-white mb-12'>Share your event!!</h2>
@@ -82,6 +86,7 @@ const CreateEvent = ({ pool, hashtags }: Props) => {
                     value={input.title}
                     onChange={handleChange}
                     rows={1}
+                    required
                 />
                 <textarea
                     name='location'
@@ -90,22 +95,26 @@ const CreateEvent = ({ pool, hashtags }: Props) => {
                     value={input.location}
                     onChange={handleChange}
                     rows={1}
+                    required
                 />
-                <textarea
+                <input
+                    type="date"
                     name='date'
                     placeholder='date'
                     className='w-full p-12 rounded'
                     value={input.date}
                     onChange={handleChange}
-                    rows={1}
+                    required
+                    
                 />
-                <textarea
+                <input
+                    type="time"
                     name='time'
                     placeholder='time'
                     className='w-full p-12 rounded'
                     value={input.time}
                     onChange={handleChange}
-                    rows={1}
+                    required
                 />
                 <textarea
                     name='description'
@@ -114,6 +123,7 @@ const CreateEvent = ({ pool, hashtags }: Props) => {
                     value={input.description}
                     onChange={handleChange}
                     rows={1}
+                    required
                 />
                 <div className='flex justify-end'>
                     <button className='bg-violet-500 px-16 py-4 rounded font-bold hover:bg-violet-600 active:scale-90'>

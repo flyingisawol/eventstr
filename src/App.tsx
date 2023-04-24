@@ -31,6 +31,7 @@ function App() {
   const [metadata, setMetadata] = useState<Record<string, Metadata>>({});
   const metadataFetched = useRef<Record<string, boolean>>({});
   const [hashtags, setHashtags] = useState<string[]>([]);
+  const [yourPubKey, setPubKey] = useState<string>("") 
 
   //setup a relays pool
   useEffect(() => {
@@ -41,6 +42,28 @@ function App() {
       _pool.close(RELAYS)
     }
   }, [])
+
+  useEffect(()=>{
+    const  fetchPubKey = async () =>{
+      if (!window.nostr) {
+        console.log("no nostr")
+        return ""
+      } 
+    
+      
+    try {
+      const pubkey = await window.nostr.getPublicKey();
+      return pubkey
+    } catch (error) {
+      
+      console.log("grabbing key failed")
+      return ""
+    }
+      
+    }
+    fetchPubKey().then((key)=> setPubKey(key))
+    
+  },[events])
 
   // subscribe to some events
   useEffect(() => {
@@ -95,7 +118,7 @@ function App() {
   }, [events, pool]);
 
   if (!pool) return null;
-
+  
   return (
     <div className="app">
       <div className="flex flex-col gap-16">
@@ -103,7 +126,7 @@ function App() {
         <div className="">
           <CreateEvent pool={pool} hashtags={hashtags} />
           <HashtagFilter hashtags={hashtags} onChange={setHashtags}/>
-          <EventsList metadata={metadata} notes={events} />
+          <EventsList yourPubKey = {yourPubKey} metadata={metadata} notes={events} />
         </div>
       </div>
     </div>
