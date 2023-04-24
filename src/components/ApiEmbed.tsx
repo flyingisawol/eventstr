@@ -8,8 +8,6 @@ const ApiEmbed = ({location}:Props) =>{
     const baseURL = "https://www.google.com/maps/embed/v1/place?key="
     const google_key = process.env?.REACT_APP_API_KEY
     const fullURL = `${baseURL}${google_key}&q=${location}`
-    console.log(process.env)
-    console.log(google_key)
     return (
         <div>
             <iframe

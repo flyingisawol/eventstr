@@ -30,7 +30,7 @@ const EventCard = ({ content, user, created_at, hashtags }: Props) => {
     dateString = dateTimeFormat1.format(dateObj)
   }
   catch(e){
-    console.log(e)
+    
     dateString = "failed"
   }
 
