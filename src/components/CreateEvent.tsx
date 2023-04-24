@@ -19,7 +19,7 @@ const CreateEvent = ({ pool, hashtags }: Props) => {
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
+        const formattedInput = {...input,"location": input.location.replaceAll(" ","+")}
         if (!window.nostr) {
             alert("nostr extension not found")
             return;
@@ -27,7 +27,7 @@ const CreateEvent = ({ pool, hashtags }: Props) => {
 
         // construct the event object
         const _baseEvent = {
-            content: JSON.stringify(input),
+            content: JSON.stringify(formattedInput),
             created_at: Math.round(Date.now() / 1000),
             kind: 1,
             tags: [...hashtags.map((hashtag) => ["t", hashtag])],
@@ -68,14 +68,11 @@ const CreateEvent = ({ pool, hashtags }: Props) => {
 
     const handleChange = (e: React.SyntheticEvent) => {
         let target = e.target as HTMLInputElement;
-        if(target.name === "location"){
-            setInput({...input, [target.name]:target.value.replaceAll(" ","+")})
-        }else{
+        
             setInput({...input, [target.name]:target.value})
-        }
+        
         
 
-        console.log(target.value)
     }
     // #TODO: Validation for Date + Time
     return (
