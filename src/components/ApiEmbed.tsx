@@ -18,6 +18,7 @@ const ApiEmbed = ({location}:Props) =>{
                 src={fullURL}
                 loading="lazy"
                 allowFullScreen
+                sandbox="allow-scripts"
                 
             >
             </iframe>
