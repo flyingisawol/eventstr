@@ -1,4 +1,4 @@
-import { Event, nip19 } from "nostr-tools";
+import { Event, SimplePool, nip19 } from "nostr-tools";
 import { Metadata } from "../App";
 import EventCard from "./EventCard";
 
@@ -6,10 +6,11 @@ interface Props {
     notes: Event[];
     metadata: Record<string, Metadata>;
     yourPubKey: string
+    pool: SimplePool
 }
 
-const EventsList = ({ yourPubKey,notes, metadata }: Props) => {
-    
+const EventsList = ({ yourPubKey,notes, metadata, pool }: Props) => {
+    console.log(notes)
     return (
         <div className="flex flex-col gap-16 justify-center feed">
             {notes.map((note) => (
@@ -30,7 +31,11 @@ const EventsList = ({ yourPubKey,notes, metadata }: Props) => {
                     hashtags={note.tags
                         .filter((t) => t[0] === 't')
                         .map((t) => t[1])
-                }
+                    }
+                    eventId = {note.id}
+                    notes = {notes}
+                    pool = {pool}
+
                 />
             ))}
         </div>

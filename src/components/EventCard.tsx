@@ -1,5 +1,6 @@
 import ApiEmbed from "./ApiEmbed"
-
+import AttendToggler from "./AttendToggler"
+import {Event, SimplePool} from 'nostr-tools'
 interface Props {
   pubkey: string
   content: string
@@ -10,6 +11,10 @@ interface Props {
   }
   created_at: number;
   hashtags: string[];
+  notes: Event[];
+  key: string;
+  pool: SimplePool;
+  eventId: string;
 }
 
 // interface Event {
@@ -20,7 +25,7 @@ interface Props {
 //   description?: string
 // }
 
-const  EventCard = ({  pubkey,content, user, created_at, hashtags }: Props) => {
+const  EventCard = ({  pubkey,content, user, created_at, hashtags, notes, pool, eventId }: Props) => {
 
   let parsedContent : any = {title: "", date: "", location: "", time: "", description: ""}
   if(content){
@@ -121,6 +126,17 @@ const  EventCard = ({  pubkey,content, user, created_at, hashtags }: Props) => {
         </li>
       ))}
       </ul>
+      <AttendToggler 
+      pubkey = {pubkey}
+      user = {user}
+      content = {content}
+      created_at={created_at}
+      hashtags={hashtags}
+      notes = {notes}
+      
+      pool = {pool}
+      eventId = {eventId}
+      />
       </div>
     </>
   )

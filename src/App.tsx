@@ -126,7 +126,7 @@ function App() {
         <div className="core flex-col">
           <CreateEvent pool={pool} hashtags={hashtags} />
           <HashtagFilter hashtags={hashtags} onChange={setHashtags}/>
-          <EventsList yourPubKey = {yourPubKey} metadata={metadata} notes={events} />
+          <EventsList yourPubKey = {yourPubKey} metadata={metadata} notes={events} pool = {pool} />
         </div>
       </div>
     </div>
