@@ -19,7 +19,7 @@ export default function HashtagsFilter({ hashtags, onChange }: Props) {
   };
 
   return (
-    <div className="flex flex-col gap-12">
+    <div className="flex flex-col gap-12 feed w-full">
       <h3 className="text-h3 text-white">Filtering hashtags</h3>
       <form onSubmit={onSubmit} className="flex gap-16">
         <input

@@ -123,7 +123,7 @@ function App() {
     <div className="app">
       <div className="flex flex-col gap-16">
         <h1 className="text-h1 purple-orange-highlights">eventstr</h1>
-        <div className="">
+        <div className="core flex-col">
           <CreateEvent pool={pool} hashtags={hashtags} />
           <HashtagFilter hashtags={hashtags} onChange={setHashtags}/>
           <EventsList yourPubKey = {yourPubKey} metadata={metadata} notes={events} />

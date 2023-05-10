@@ -32,9 +32,15 @@ body {
   box-sizing: border-box;
   min-height: 100vh;
   min-width: 100vw;
+  /* justify-content: center;
+  display: flex; 
+  place-items: center; */
+}
+.core {
   justify-content: center;
   display: flex; 
   place-items: center;
+  box-sizing: border-box;
 }
 
 .purple-orange-highlights {
