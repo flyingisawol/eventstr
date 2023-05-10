@@ -3,30 +3,7 @@ import { EventTemplate, Event, getEventHash, SimplePool} from "nostr-tools";
 import { RELAYS } from "../App";
 import { useState , useEffect} from "react";
 
-/* 
 
-    check if it your event, durr you are attending your own event -> chcekc user.pubkey with pubkey
-    check if you are in the attending list if you are you are going -> check p tags of the latest reply to the root of the event 
-
-    EVENT
-    REPLY 1 ( BOB IS ATTENDING)
-    [EVENT HOST, BOB]
-    REPLY 1.1 ( DYLAN IS ATTENDING, THIS IS A REPLY TO BOB)
-    [EVENT HOST, BOB, DYLAN]
-    ie just push yourself
-
-    ie behaves kind of like a linked list 
-    
-    the e tag should be according to nip10 : 
-    if its the first then it is : 
-    ["e", 'eventstr event ID', '', 'root']
-    if not : 
-    ["e", 'Previous Attendee event ID', '', 'reply']
-
-
-    take our event id, go to the relay it was on, find the Event that has the evenstr event and a 'root' then requery the relay to find the latest reply (ie traverse linked list)
-
-*/
 interface Props {
     pubkey: string
     content: string
